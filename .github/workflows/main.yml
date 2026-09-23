@@ -1,0 +1,77 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 6 * * 1'   # ogni lunedì: trova nuove CVE anche senza commit
+  workflow_dispatch:
+
+# Permessi minimi: il workflow può solo leggere il repo
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    name: Secret scan (Gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0            # tutta la cronologia, non solo l'ultimo commit
+          persist-credentials: false
+      - name: Gitleaks
+        run: |
+          docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:latest \
+            git /repo --redact --verbose
+
+  sast:
+    name: SAST (Semgrep)
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Semgrep
+        run: |
+          semgrep scan \
+            --config p/javascript \
+            --config p/typescript \
+            --config p/owasp-top-ten \
+            --error
+
+  sca:
+    name: SCA (dipendenze)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+          cache: npm
+      - name: Installa dipendenze (senza eseguire script)
+        run: npm ci --ignore-scripts
+      - name: Vulnerabilità note
+        run: npm audit --audit-level=high
+      - name: Verifica firme dei pacchetti
+        run: npm audit signatures
+
+  build:
+    name: Build
+    needs: [secrets, sast, sca]   # parte solo se tutti i controlli passano
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - run: npm run build
