@@ -4,10 +4,15 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7     # aspetta 7 giorni prima di proporre una nuova versione
     groups:
       dipendenze:
-        patterns: ["*"]     # una sola PR a settimana invece di tante
+        patterns: ["*"]   # una sola PR a settimana invece di tante
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
