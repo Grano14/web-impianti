@@ -1,0 +1,60 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import Image from './Image.astro';
+import { images } from '../config/images';
+import { site, telHref, yearsOfExperience } from '../config/site';
+import { url } from '../utils/url';
+
+const points = ['Preventivi gratuiti', 'Tecnici certificati', 'Di.Co. rilasciata a fine lavori'];
+---
+
+<section class="relative overflow-hidden bg-ink-900 text-white">
+  <div
+    class="pointer-events-none absolute -top-32 -right-32 size-96 rounded-full bg-primary-600/20 blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-2 lg:gap-14 lg:px-8 lg:py-24">
+    <div>
+      <p class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm font-medium text-primary-300">
+        <Icon name="star" class="size-4" />
+        Da oltre {yearsOfExperience} anni a {site.address.city} e provincia
+      </p>
+      <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-balance sm:text-5xl xl:text-[3.5rem] xl:leading-tight">
+        Impianti elettrici, fotovoltaico e ristrutturazioni{' '}
+        <span class="text-primary-400">chiavi in mano</span>
+      </h1>
+      <p class="mt-5 max-w-xl text-lg text-ink-300">
+        Siamo una squadra di elettricisti e installatori qualificati. Realizziamo impianti sicuri e a norma,
+        aiutiamo famiglie e aziende a risparmiare energia e ristrutturiamo i tuoi spazi con un unico referente.
+      </p>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <Button href={url('/contatti/#preventivo')} size="lg">
+          Richiedi un preventivo
+          <Icon name="arrowRight" class="size-5" />
+        </Button>
+        <Button href={telHref(site.phone)} variant="outline-light" size="lg">
+          <Icon name="phone" class="size-5" />
+          Chiama ora
+        </Button>
+      </div>
+
+      <ul class="mt-8 flex flex-col gap-2 text-sm text-ink-200 sm:flex-row sm:flex-wrap sm:gap-x-6">
+        {
+          points.map((p) => (
+            <li class="flex items-center gap-2">
+              <Icon name="checkCircle" class="size-5 text-primary-400" />
+              {p}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10">
+      <Image image={images.homeHero} aspect="aspect-[4/3]" eager />
+    </div>
+  </div>
+</section>

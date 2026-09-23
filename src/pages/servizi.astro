@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Image from '../components/Image.astro';
+import Icon from '../components/Icon.astro';
+import Button from '../components/Button.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { services, workSteps } from '../data/services';
+import { site } from '../config/site';
+import { url } from '../utils/url';
+---
+
+<BaseLayout
+  title="Servizi: impianti elettrici, fotovoltaico e ristrutturazioni"
+  description={`Impianti elettrici civili e industriali, impianti fotovoltaici con accumulo e ristrutturazioni chiavi in mano a ${site.address.city} e provincia. Scopri cosa possiamo fare per te.`}
+>
+  <PageHeader
+    title="I nostri servizi"
+    subtitle="Dall’impianto elettrico all’energia solare, fino alla ristrutturazione completa: un unico partner qualificato per la tua casa o la tua azienda."
+  />
+
+  <!-- Indice rapido dei servizi -->
+  <nav aria-label="Servizi in questa pagina" class="border-b border-ink-200 bg-white">
+    <ul class="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 py-3 sm:px-6 lg:px-8">
+      {
+        services.map((s) => (
+          <li class="shrink-0">
+            <a
+              href={`#${s.id}`}
+              class="flex items-center gap-2 rounded-full border border-ink-200 px-4 py-2 text-sm font-semibold text-ink-800 hover:border-primary-400 hover:bg-primary-50 hover:text-primary-800"
+            >
+              <Icon name={s.icon} class="size-4 text-primary-600" />
+              {s.title}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    services.map((service, index) => (
+      <section
+        id={service.id}
+        aria-labelledby={`${service.id}-titolo`}
+        class:list={['py-16 sm:py-20', index % 2 === 1 && 'bg-ink-50']}
+      >
+        <div class="mx-auto grid max-w-6xl items-start gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8">
+          <div class:list={[index % 2 === 1 && 'lg:order-2']}>
+            <div class="flex items-center gap-3">
+              <span class="flex size-12 items-center justify-center rounded-xl bg-primary-600 text-white">
+                <Icon name={service.icon} class="size-7" />
+              </span>
+              <h2 id={`${service.id}-titolo`} class="text-3xl font-bold tracking-tight text-ink-900">
+                {service.title}
+              </h2>
+            </div>
+            <div class="mt-6 space-y-4 text-lg text-ink-600">
+              {service.description.map((p) => (
+                <p>{p}</p>
+              ))}
+            </div>
+            <h3 class="mt-8 text-lg font-bold text-ink-900">Cosa facciamo</h3>
+            <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+              {service.features.map((f) => (
+                <li class="flex gap-2.5 text-ink-700">
+                  <Icon name="check" class="mt-0.5 size-5 shrink-0 text-primary-600" strokeWidth={2.5} />
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class:list={['space-y-6', index % 2 === 1 && 'lg:order-1']}>
+            <div class="overflow-hidden rounded-2xl shadow-lg">
+              <Image image={service.image} aspect="aspect-[4/3]" />
+            </div>
+            <div class="rounded-2xl border-l-4 border-primary-600 bg-white p-6 shadow-sm ring-1 ring-ink-200">
+              <h3 class="flex items-center gap-2 font-bold text-ink-900">
+                <Icon name="shield" class="size-5 text-primary-600" />
+                {service.highlight.title}
+              </h3>
+              <p class="mt-2 text-ink-600">{service.highlight.text}</p>
+            </div>
+            <Button href={url('/contatti/#preventivo')} class="w-full sm:w-auto">
+              Richiedi un preventivo<span class="sr-only"> per {service.title.toLowerCase()}</span>
+              <Icon name="arrowRight" class="size-5" />
+            </Button>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <!-- Come lavoriamo -->
+  <section class="bg-ink-900 py-16 sm:py-24" aria-labelledby="come-lavoriamo">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <SectionHeading id="come-lavoriamo" eyebrow="Come lavoriamo" title="Dal primo contatto alla consegna" tone="light">
+        Un percorso semplice e trasparente, con un referente dedicato in ogni fase.
+      </SectionHeading>
+      <ol class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          workSteps.map((step, i) => (
+            <li class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
+              <span class="flex size-10 items-center justify-center rounded-full bg-primary-600 font-bold text-white" aria-hidden="true">
+                {i + 1}
+              </span>
+              <h3 class="mt-4 text-lg font-bold text-white">
+                <span class="sr-only">Fase {i + 1}: </span>
+                {step.title}
+              </h3>
+              <p class="mt-2 text-ink-300">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <CtaBanner title="Parliamo del tuo progetto" />
+</BaseLayout>

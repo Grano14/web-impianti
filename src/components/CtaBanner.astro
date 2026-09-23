@@ -1,0 +1,41 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { site, telHref, whatsappHref } from '../config/site';
+import { url } from '../utils/url';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Hai un progetto in mente?',
+  text = 'Raccontaci di cosa hai bisogno: ti ricontattiamo entro un giorno lavorativo per fissare un sopralluogo gratuito.',
+} = Astro.props;
+---
+
+<section class="bg-white py-16 sm:py-20" aria-labelledby="cta-titolo">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="relative overflow-hidden rounded-3xl bg-primary-600 px-6 py-12 text-center shadow-xl sm:px-12 sm:py-16">
+      <div class="pointer-events-none absolute -bottom-24 -left-24 size-72 rounded-full bg-primary-800/50 blur-2xl" aria-hidden="true"></div>
+      <div class="relative">
+        <h2 id="cta-titolo" class="text-3xl font-bold tracking-tight text-balance text-white sm:text-4xl">{title}</h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-white">{text}</p>
+        <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <Button href={url('/contatti/#preventivo')} variant="light" size="lg">
+            Richiedi un preventivo
+            <Icon name="arrowRight" class="size-5" />
+          </Button>
+          <Button href={telHref(site.phone)} variant="outline-light" size="lg">
+            <Icon name="phone" class="size-5" />
+            {site.phone}
+          </Button>
+          <Button href={whatsappHref} variant="outline-light" size="lg" target="_blank" rel="noopener noreferrer">
+            <Icon name="chat" class="size-5" />
+            WhatsApp<span class="sr-only"> (si apre in una nuova scheda)</span>
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

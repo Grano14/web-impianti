@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+/*
+ * ============================================================
+ *  PALETTE COLORI DEL SITO — modifica qui per cambiare i colori
+ * ============================================================
+ *
+ * primary  → arancione: pulsanti, call to action, accenti
+ * ink      → scala grigio/antracite/nero: testi, sfondi, bordi
+ *
+ * Si usano nelle classi Tailwind, ad es. `bg-primary-600`, `text-ink-900`.
+ *
+ * Nota sul contrasto (accessibilità WCAG AA):
+ * - primary-600 e più scuri reggono testo bianco (pulsanti)
+ * - primary-700 è il colore dei link su sfondo bianco
+ * - primary-400/500 vanno usati su sfondi scuri (ink-800/900/950)
+ * Se cambi le tonalità, verifica il contrasto con uno strumento come
+ * https://webaim.org/resources/contrastchecker/
+ */
+@theme {
+  --color-primary-50: #fff7ed;
+  --color-primary-100: #ffedd5;
+  --color-primary-200: #fed7aa;
+  --color-primary-300: #fdba74;
+  --color-primary-400: #fb923c;
+  --color-primary-500: #f97316;
+  --color-primary-600: #cc4a0a;
+  --color-primary-700: #a93d08;
+  --color-primary-800: #8a3209;
+  --color-primary-900: #6c290b;
+  --color-primary-950: #431407;
+
+  --color-ink-50: #f6f7f8;
+  --color-ink-100: #eceef1;
+  --color-ink-200: #d5d9df;
+  --color-ink-300: #b0b7c1;
+  --color-ink-400: #858e9b;
+  --color-ink-500: #636c79;
+  --color-ink-600: #4d545e;
+  --color-ink-700: #3b4048;
+  --color-ink-800: #2a2e34;
+  --color-ink-900: #1c1f23;
+  --color-ink-950: #121417;
+
+  /* Font di sistema: nessun caricamento da server esterni (privacy e velocità) */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-white font-sans text-ink-800 antialiased;
+  }
+
+  /* Focus ben visibile per chi naviga da tastiera */
+  :focus-visible {
+    @apply outline-3 outline-offset-2 outline-primary-500;
+  }
+
+  /* Evita che l'header fisso copra i titoli raggiunti con le ancore */
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+}
+
+/* Stile per i testi lunghi (comunicazioni, privacy) */
+@layer components {
+  .prose-site {
+    @apply max-w-none text-ink-700 leading-relaxed;
+  }
+  .prose-site > * + * {
+    @apply mt-4;
+  }
+  .prose-site h2 {
+    @apply mt-10 text-2xl font-bold text-ink-900;
+  }
+  .prose-site h3 {
+    @apply mt-8 text-xl font-semibold text-ink-900;
+  }
+  .prose-site a {
+    @apply font-medium text-primary-700 underline underline-offset-2 hover:text-primary-800;
+  }
+  .prose-site ul {
+    @apply list-disc space-y-1 pl-6;
+  }
+  .prose-site ol {
+    @apply list-decimal space-y-1 pl-6;
+  }
+  .prose-site strong {
+    @apply font-semibold text-ink-900;
+  }
+  .prose-site blockquote {
+    @apply border-l-4 border-primary-500 bg-ink-50 py-2 pl-4 italic;
+  }
+}

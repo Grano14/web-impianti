@@ -1,0 +1,156 @@
+---
+/**
+ * Modulo di contatto senza server: i dati vengono inviati a Formspree
+ * (https://formspree.io), che li inoltra via email.
+ * L'ID del modulo si imposta in src/config/site.ts (campo `formspreeId`).
+ *
+ * Funziona anche senza JavaScript (invio classico); con JavaScript attivo
+ * l'invio avviene senza lasciare la pagina e mostra un messaggio di conferma.
+ */
+import Icon from './Icon.astro';
+import { services } from '../data/services';
+import { site, formspreeAction, isFormspreeConfigured } from '../config/site';
+import { url } from '../utils/url';
+
+const field =
+  'mt-1.5 block w-full rounded-lg border border-ink-300 bg-white px-3.5 py-2.5 text-ink-900 shadow-sm placeholder:text-ink-400 focus:border-primary-600 focus:ring-2 focus:ring-primary-600/30 focus:outline-none';
+const label = 'block text-sm font-semibold text-ink-900';
+---
+
+<form
+  action={formspreeAction}
+  method="POST"
+  class="space-y-5"
+  data-contact-form
+  data-configured={isFormspreeConfigured ? 'true' : 'false'}
+>
+  {
+    !isFormspreeConfigured && (
+      <div class="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900" role="note">
+        <strong>Modulo non ancora attivo.</strong> Inserisci l’ID Formspree in <code>src/config/site.ts</code> per
+        abilitare l’invio. Nel frattempo puoi contattarci per telefono o email.
+      </div>
+    )
+  }
+
+  <input type="hidden" name="_subject" value={`Nuova richiesta dal sito ${site.name}`} />
+  <!-- Campo trappola anti-spam: invisibile alle persone, i bot lo compilano -->
+  <div class="hidden" aria-hidden="true">
+    <label>Non compilare questo campo <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="nome" class={label}>Nome e cognome <span class="text-primary-700" aria-hidden="true">*</span></label>
+      <input id="nome" name="nome" type="text" autocomplete="name" required class={field} />
+    </div>
+    <div>
+      <label for="telefono" class={label}>Telefono <span class="font-normal text-ink-500">(facoltativo)</span></label>
+      <input id="telefono" name="telefono" type="tel" autocomplete="tel" class={field} />
+    </div>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="email" class={label}>Email <span class="text-primary-700" aria-hidden="true">*</span></label>
+      <input id="email" name="email" type="email" autocomplete="email" required class={field} />
+    </div>
+    <div>
+      <label for="comune" class={label}>Comune dei lavori <span class="font-normal text-ink-500">(facoltativo)</span></label>
+      <input id="comune" name="comune" type="text" autocomplete="address-level2" class={field} />
+    </div>
+  </div>
+
+  <div>
+    <label for="servizio" class={label}>Servizio di interesse</label>
+    <select id="servizio" name="servizio" class={field}>
+      {services.map((s) => <option>{s.title}</option>)}
+      <option>Altro / più servizi</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="messaggio" class={label}>Messaggio <span class="text-primary-700" aria-hidden="true">*</span></label>
+    <textarea
+      id="messaggio"
+      name="messaggio"
+      rows="5"
+      required
+      aria-describedby="messaggio-aiuto"
+      class={field}></textarea>
+    <p id="messaggio-aiuto" class="mt-1.5 text-sm text-ink-500">
+      Descrivi brevemente il lavoro: tipo di immobile, metratura indicativa, tempistiche.
+    </p>
+  </div>
+
+  <div class="flex gap-3">
+    <input
+      id="privacy"
+      name="privacy"
+      type="checkbox"
+      value="Letta e accettata"
+      required
+      class="mt-1 size-5 shrink-0 rounded border-ink-300 accent-primary-600"
+    />
+    <label for="privacy" class="text-sm text-ink-700">
+      Ho letto l’<a href={url('/privacy/')} class="font-medium text-primary-700 underline" target="_blank">informativa sulla privacy<span class="sr-only"> (si apre in una nuova scheda)</span></a>{' '}
+      e acconsento al trattamento dei dati per ricevere una risposta alla mia richiesta.
+      <span class="text-primary-700" aria-hidden="true">*</span>
+    </label>
+  </div>
+
+  <p class="text-sm text-ink-500">I campi contrassegnati con <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> sono obbligatori.</p>
+
+  <button
+    type="submit"
+    class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-6 py-3.5 text-lg font-semibold text-white shadow-sm transition-colors hover:bg-primary-700 disabled:cursor-wait disabled:opacity-70 sm:w-auto"
+  >
+    <span data-submit-label>Invia la richiesta</span>
+    <Icon name="arrowRight" class="size-5" />
+  </button>
+
+  <div data-form-status role="status" aria-live="polite" class="hidden rounded-lg p-4 text-sm font-medium" tabindex="-1"></div>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const status = form?.querySelector<HTMLElement>('[data-form-status]');
+  const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const submitLabel = form?.querySelector<HTMLElement>('[data-submit-label]');
+
+  const showStatus = (type: 'ok' | 'error', message: string) => {
+    if (!status) return;
+    status.textContent = message;
+    status.classList.remove('hidden', 'bg-green-50', 'text-green-900', 'bg-red-50', 'text-red-900');
+    status.classList.add(...(type === 'ok' ? ['bg-green-50', 'text-green-900'] : ['bg-red-50', 'text-red-900']));
+    status.focus();
+  };
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (form.dataset.configured !== 'true') {
+      showStatus('error', 'Il modulo non è ancora attivo. Contattaci per telefono o email, grazie.');
+      return;
+    }
+
+    if (submitButton) submitButton.disabled = true;
+    if (submitLabel) submitLabel.textContent = 'Invio in corso…';
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      form.reset();
+      showStatus('ok', 'Grazie! Abbiamo ricevuto la tua richiesta e ti risponderemo il prima possibile.');
+    } catch {
+      showStatus('error', 'Si è verificato un problema durante l’invio. Riprova più tardi oppure contattaci per telefono o email.');
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+      if (submitLabel) submitLabel.textContent = 'Invia la richiesta';
+    }
+  });
+</script>

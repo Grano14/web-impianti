@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+import SEO from '../components/SEO.astro';
+import LocalBusinessSchema from '../components/LocalBusinessSchema.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { url } from '../utils/url';
+
+interface Props {
+  /** Titolo della pagina (viene aggiunto il nome dell'attività) */
+  title: string;
+  /** Meta description: 120-160 caratteri, descrive il contenuto della pagina */
+  description: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const { title, description, type, noindex } = Astro.props;
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Segnala che JavaScript è attivo (per mostrare i controlli che ne hanno bisogno) -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1c1f23" />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <link rel="sitemap" href={url('/sitemap-index.xml')} />
+    <SEO title={title} description={description} type={type} noindex={noindex} />
+    <LocalBusinessSchema />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#contenuto"
+      class="sr-only z-50 rounded-lg bg-primary-600 px-4 py-3 font-semibold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+    >
+      Vai al contenuto principale
+    </a>
+    <Header />
+    <main id="contenuto" tabindex="-1" class="flex-1 focus:outline-none">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

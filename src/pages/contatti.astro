@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ContactForm from '../components/ContactForm.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import Icon from '../components/Icon.astro';
+import { site, fullAddress, telHref, whatsappHref } from '../config/site';
+
+const channels = [
+  { icon: 'phone', label: 'Telefono', value: site.phone, href: telHref(site.phone) },
+  ...(site.mobile ? [{ icon: 'phone', label: 'Cellulare', value: site.mobile, href: telHref(site.mobile) }] : []),
+  { icon: 'mail', label: 'Email', value: site.email, href: `mailto:${site.email}` },
+  ...(site.pec ? [{ icon: 'mail', label: 'PEC', value: site.pec, href: `mailto:${site.pec}` }] : []),
+] as const;
+---
+
+<BaseLayout
+  title="Contatti e preventivi gratuiti"
+  description={`Contatta ${site.name} per un preventivo gratuito: telefono ${site.phone}, WhatsApp, email o modulo online. Sede a ${site.address.city}, interventi in ${site.serviceArea.description}.`}
+>
+  <PageHeader
+    title="Contatti"
+    subtitle="Chiamaci, scrivici su WhatsApp o compila il modulo: ti rispondiamo entro un giorno lavorativo."
+  />
+
+  <section class="py-14 sm:py-20">
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-5 lg:gap-12 lg:px-8">
+      <!-- Recapiti -->
+      <div class="space-y-6 lg:col-span-2">
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-4 rounded-2xl bg-[#1f7a4d] p-5 text-white shadow-sm transition-colors hover:bg-[#186540]"
+        >
+          <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/15">
+            <Icon name="chat" class="size-7" />
+          </span>
+          <span>
+            <span class="block text-lg font-bold">Scrivici su WhatsApp</span>
+            <span class="block text-sm text-white/90">Risposta rapida negli orari di apertura</span>
+          </span>
+          <Icon name="arrowRight" class="ml-auto size-5 shrink-0" />
+          <span class="sr-only">(si apre in una nuova scheda)</span>
+        </a>
+
+        <div class="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm">
+          <h2 class="text-lg font-bold text-ink-900">Recapiti</h2>
+          <dl class="mt-4 space-y-4">
+            {
+              channels.map((c) => (
+                <div class="flex gap-3">
+                  <dt class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600">
+                    <Icon name={c.icon} class="size-5" />
+                    <span class="sr-only">{c.label}</span>
+                  </dt>
+                  <dd>
+                    <span class="block text-sm text-ink-500" aria-hidden="true">{c.label}</span>
+                    <a href={c.href} class="font-semibold break-all text-ink-900 hover:text-primary-700 hover:underline">
+                      {c.value}
+                    </a>
+                  </dd>
+                </div>
+              ))
+            }
+            <div class="flex gap-3">
+              <dt class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600">
+                <Icon name="pin" class="size-5" />
+                <span class="sr-only">Indirizzo</span>
+              </dt>
+              <dd>
+                <span class="block text-sm text-ink-500" aria-hidden="true">Sede</span>
+                <address class="font-semibold text-ink-900 not-italic">{fullAddress}</address>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm">
+          <h2 class="flex items-center gap-2 text-lg font-bold text-ink-900">
+            <Icon name="clock" class="size-5 text-primary-600" />
+            Orari
+          </h2>
+          <dl class="mt-4 divide-y divide-ink-100">
+            {
+              site.openingHours.map((row) => (
+                <div class="flex flex-col py-2.5 sm:flex-row sm:justify-between sm:gap-4">
+                  <dt class="font-semibold text-ink-900">{row.label}</dt>
+                  <dd class="text-ink-600 sm:text-right">{row.hours}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        <div class="rounded-2xl bg-ink-50 p-6">
+          <h2 class="flex items-center gap-2 text-lg font-bold text-ink-900">
+            <Icon name="map" class="size-5 text-primary-600" />
+            Zona servita
+          </h2>
+          <p class="mt-2 text-ink-600">Interveniamo in {site.serviceArea.description}.</p>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {site.serviceArea.places.map((p) => (
+              <li class="rounded-full bg-white px-3 py-1 text-sm font-medium text-ink-700 ring-1 ring-ink-200">{p}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Modulo -->
+      <div class="lg:col-span-3">
+        <div id="preventivo" class="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm sm:p-8">
+          <h2 class="text-2xl font-bold text-ink-900">Richiedi un preventivo gratuito</h2>
+          <p class="mt-2 text-ink-600">
+            Compila il modulo: ti ricontattiamo per capire le tue esigenze ed eventualmente fissare un sopralluogo, senza
+            impegno.
+          </p>
+          <div class="mt-8">
+            <ContactForm />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16 sm:pb-24" aria-labelledby="dove-siamo">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <h2 id="dove-siamo" class="mb-6 text-2xl font-bold text-ink-900">Dove siamo</h2>
+      <MapEmbed />
+    </div>
+  </section>
+</BaseLayout>

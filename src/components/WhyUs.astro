@@ -1,0 +1,59 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import Image from './Image.astro';
+import { images } from '../config/images';
+import { yearsOfExperience } from '../config/site';
+
+const reasons: { icon: IconName; title: string; text: string }[] = [
+  {
+    icon: 'star',
+    title: `Oltre ${yearsOfExperience} anni di esperienza`,
+    text: 'Centinaia di impianti realizzati per famiglie, condomini e aziende del territorio.',
+  },
+  {
+    icon: 'shield',
+    title: 'Tecnici certificati',
+    text: 'Impresa abilitata ai sensi del D.M. 37/2008, personale formato e aggiornato sulle normative.',
+  },
+  {
+    icon: 'document',
+    title: 'Preventivi gratuiti e chiari',
+    text: 'Sopralluogo e preventivo senza impegno, con voci dettagliate e nessun costo nascosto.',
+  },
+  {
+    icon: 'users',
+    title: 'Assistenza anche dopo',
+    text: 'Garanzia sui lavori, manutenzione programmata e pronto intervento per i nostri clienti.',
+  },
+];
+---
+
+<section class="bg-ink-50 py-16 sm:py-24" aria-labelledby="perche-sceglierci">
+  <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+    <div>
+      <SectionHeading id="perche-sceglierci" eyebrow="Perché sceglierci" title="Lavori fatti bene, al primo colpo" align="left">
+        Sicurezza, qualità dei materiali e trasparenza: sono i valori con cui lavoriamo ogni giorno, dal piccolo
+        intervento al cantiere completo.
+      </SectionHeading>
+      <ul class="mt-10 grid gap-6 sm:grid-cols-2">
+        {
+          reasons.map((r) => (
+            <li class="flex gap-4">
+              <div class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary-600 text-white">
+                <Icon name={r.icon} class="size-6" />
+              </div>
+              <div>
+                <h3 class="font-bold text-ink-900">{r.title}</h3>
+                <p class="mt-1 text-sm text-ink-600">{r.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="overflow-hidden rounded-2xl shadow-lg">
+      <Image image={images.aboutTeam} aspect="aspect-[4/3]" />
+    </div>
+  </div>
+</section>

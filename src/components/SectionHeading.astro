@@ -1,0 +1,45 @@
+---
+interface Props {
+  /** Piccola etichetta sopra il titolo */
+  eyebrow?: string;
+  title: string;
+  /** Livello del titolo (default h2) */
+  as?: 'h1' | 'h2';
+  align?: 'left' | 'center';
+  /** "light" per sezioni su sfondo scuro */
+  tone?: 'dark' | 'light';
+  id?: string;
+}
+const { eyebrow, title, as: Tag = 'h2', align = 'center', tone = 'dark', id } = Astro.props;
+---
+
+<div class:list={['max-w-2xl', align === 'center' && 'mx-auto text-center']}>
+  {
+    eyebrow && (
+      <p
+        class:list={[
+          'text-sm font-semibold uppercase tracking-wider',
+          tone === 'dark' ? 'text-primary-700' : 'text-primary-400',
+        ]}
+      >
+        {eyebrow}
+      </p>
+    )
+  }
+  <Tag
+    id={id}
+    class:list={[
+      'mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl',
+      tone === 'dark' ? 'text-ink-900' : 'text-white',
+    ]}
+  >
+    {title}
+  </Tag>
+  {
+    Astro.slots.has('default') && (
+      <p class:list={['mt-4 text-lg', tone === 'dark' ? 'text-ink-600' : 'text-ink-300']}>
+        <slot />
+      </p>
+    )
+  }
+</div>

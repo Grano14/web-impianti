@@ -1,0 +1,114 @@
+---
+/**
+ * Informativa privacy di base (art. 13 GDPR).
+ * ATTENZIONE: è un modello di partenza. Fallo verificare da un consulente
+ * prima della pubblicazione definitiva.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site, fullAddress } from '../config/site';
+import { url, formatDate } from '../utils/url';
+
+const lastUpdated = formatDate(new Date(site.privacy.lastUpdated));
+---
+
+<BaseLayout
+  title="Privacy policy"
+  description={`Informativa sul trattamento dei dati personali di ${site.legalName} ai sensi del Regolamento UE 2016/679 (GDPR).`}
+>
+  <PageHeader title="Privacy policy" subtitle={`Informativa ai sensi dell’art. 13 del Regolamento UE 2016/679 (GDPR). Ultimo aggiornamento: ${lastUpdated}.`} />
+
+  <div class="py-12 sm:py-16">
+    <div class="prose-site mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <p>
+        Questa pagina descrive come vengono trattati i dati personali degli utenti che visitano il sito e che ci
+        contattano. In sintesi: <strong>il sito non usa cookie di profilazione né strumenti di statistica</strong> e
+        raccoglie solo i dati che scegli di inviarci tramite il modulo di contatto.
+      </p>
+
+      <h2>1. Titolare del trattamento</h2>
+      <p>
+        {site.legalName}, con sede in {fullAddress}, P.IVA {site.vatNumber}.<br />
+        Email: <a href={`mailto:${site.email}`}>{site.email}</a>{site.pec && <>, PEC: <a href={`mailto:${site.pec}`}>{site.pec}</a></>}.
+      </p>
+
+      <h2>2. Dati raccolti e finalità</h2>
+      <h3>Dati inviati tramite il modulo di contatto</h3>
+      <p>
+        Quando compili il modulo nella pagina <a href={url('/contatti/')}>Contatti</a> raccogliamo nome e cognome,
+        indirizzo email, e facoltativamente numero di telefono e comune dei lavori, oltre al contenuto del messaggio.
+        Questi dati sono usati <strong>esclusivamente per rispondere alla tua richiesta</strong> e, se lo desideri, per
+        predisporre un preventivo. Non vengono usati per invio di pubblicità o newsletter.
+      </p>
+      <p>
+        <strong>Base giuridica:</strong> esecuzione di misure precontrattuali adottate su tua richiesta (art. 6, par. 1,
+        lett. b GDPR). Il conferimento dei dati obbligatori è necessario per poterti rispondere.
+      </p>
+
+      <h3>Contatti via telefono, email e WhatsApp</h3>
+      <p>
+        Se ci contatti per telefono, email o WhatsApp, tratteremo i dati che ci fornisci per le stesse finalità indicate
+        sopra. Il link WhatsApp apre l’app o il sito di WhatsApp, servizio gestito da WhatsApp Ireland Ltd. (gruppo
+        Meta), che tratta i dati secondo la propria informativa.
+      </p>
+
+      <h3>Dati di navigazione</h3>
+      <p>
+        Il sito è ospitato su GitHub Pages (GitHub Inc.). Come qualsiasi server web, i sistemi del fornitore di
+        hosting possono registrare in modo automatico alcuni dati tecnici (ad esempio l’indirizzo IP) per garantire la
+        sicurezza e il corretto funzionamento del servizio. Noi non abbiamo accesso a questi dati e non li usiamo per
+        identificare i visitatori.
+      </p>
+
+      <h2>3. Cookie</h2>
+      <p>
+        Questo sito <strong>non utilizza cookie di profilazione, di marketing o di statistica</strong> e non include
+        strumenti di tracciamento. Per questo motivo non è presente un banner per il consenso ai cookie. I caratteri
+        tipografici sono quelli già presenti sul tuo dispositivo: non vengono scaricati da server esterni.
+      </p>
+
+      <h2>4. Mappa</h2>
+      <p>
+        Nella pagina Contatti la mappa <strong>viene caricata solo se clicchi su “Mostra la mappa”</strong>. Solo in quel
+        momento il tuo browser si collega ai server di OpenStreetMap (OpenStreetMap Foundation), che riceveranno il tuo
+        indirizzo IP per mostrarti la mappa. Il link “Indicazioni stradali” apre invece Google Maps, soggetto
+        all’informativa di Google.
+      </p>
+
+      <h2>5. Destinatari e trasferimento dei dati</h2>
+      <p>
+        I messaggi inviati con il modulo di contatto sono gestiti tramite il servizio <strong>Formspree</strong>
+        (Formspree Inc., Stati Uniti), che li inoltra alla nostra casella email in qualità di responsabile del
+        trattamento. Il trasferimento verso gli Stati Uniti avviene sulla base delle garanzie previste dal GDPR (Clausole
+        Contrattuali Standard e/o EU-US Data Privacy Framework). I dati non vengono diffusi né venduti a terzi.
+      </p>
+
+      <h2>6. Conservazione</h2>
+      <p>
+        I dati delle richieste di contatto vengono conservati per il tempo necessario a gestire la richiesta e comunque
+        non oltre <strong>12 mesi</strong> dall’ultimo contatto, salvo che ne derivi un rapporto contrattuale: in quel
+        caso saranno conservati per il tempo previsto dagli obblighi di legge (ad esempio fiscali).
+      </p>
+
+      <h2>7. I tuoi diritti</h2>
+      <p>In qualsiasi momento puoi chiedere al titolare:</p>
+      <ul>
+        <li>l’accesso ai tuoi dati e una copia degli stessi;</li>
+        <li>la rettifica dei dati inesatti o l’integrazione di quelli incompleti;</li>
+        <li>la cancellazione dei dati o la limitazione del trattamento;</li>
+        <li>la portabilità dei dati;</li>
+        <li>di opporti al trattamento.</li>
+      </ul>
+      <p>
+        Per esercitare i tuoi diritti scrivi a <a href={`mailto:${site.email}`}>{site.email}</a>. Hai inoltre il diritto
+        di proporre reclamo al <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener noreferrer">Garante per la protezione dei dati personali</a>.
+      </p>
+
+      <h2>8. Modifiche</h2>
+      <p>
+        Questa informativa può essere aggiornata nel tempo. La data dell’ultimo aggiornamento è indicata in cima alla
+        pagina.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

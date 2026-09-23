@@ -1,0 +1,75 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { mainNav, legalNav } from '../config/navigation';
+import { site, fullAddress, telHref, whatsappHref } from '../config/site';
+import { url } from '../utils/url';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-ink-950 text-ink-300">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
+    <div class="lg:col-span-2">
+      <Logo tone="light" />
+      <p class="mt-4 max-w-sm text-sm leading-relaxed">
+        {site.description}
+      </p>
+      <p class="mt-4 text-sm">
+        <span class="font-semibold text-white">Zona servita:</span>{' '}
+        {site.serviceArea.description}
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-white">Contatti</h2>
+      <ul class="mt-4 space-y-3 text-sm">
+        <li class="flex gap-3">
+          <Icon name="pin" class="size-5 shrink-0 text-primary-400" />
+          <span>{fullAddress}</span>
+        </li>
+        <li class="flex gap-3">
+          <Icon name="phone" class="size-5 shrink-0 text-primary-400" />
+          <a href={telHref(site.phone)} class="hover:text-white hover:underline">{site.phone}</a>
+        </li>
+        <li class="flex gap-3">
+          <Icon name="mail" class="size-5 shrink-0 text-primary-400" />
+          <a href={`mailto:${site.email}`} class="break-all hover:text-white hover:underline">{site.email}</a>
+        </li>
+        <li class="flex gap-3">
+          <Icon name="chat" class="size-5 shrink-0 text-primary-400" />
+          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" class="hover:text-white hover:underline">
+            Scrivici su WhatsApp<span class="sr-only"> (si apre in una nuova scheda)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-white">Pagine</h2>
+      <ul class="mt-4 space-y-3 text-sm">
+        {
+          [...mainNav, ...legalNav].map((item) => (
+            <li>
+              <a href={url(item.href)} class="hover:text-white hover:underline">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-ink-400 sm:px-6 md:flex-row md:justify-between lg:px-8">
+      <p>
+        © {year} {site.legalName} · P.IVA {site.vatNumber}{site.rea && ` · REA ${site.rea}`}
+      </p>
+      <p>
+        <a href={url('/privacy/')} class="hover:text-white hover:underline">Privacy policy</a>{' '}
+        · Questo sito non usa cookie di profilazione
+      </p>
+    </div>
+  </div>
+</footer>

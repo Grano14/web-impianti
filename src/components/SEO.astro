@@ -1,0 +1,32 @@
+---
+/** Meta tag per motori di ricerca e condivisione sui social */
+import { site } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** "article" per le singole comunicazioni */
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const { title, description, type = 'website', noindex = false } = Astro.props;
+
+// Il titolo della home è già completo; le altre pagine aggiungono il nome dell'attività
+const isHome = title === site.name || title.startsWith(`${site.name} `);
+const fullTitle = isHome ? title : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:locale" content="it_IT" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta name="twitter:card" content="summary" />

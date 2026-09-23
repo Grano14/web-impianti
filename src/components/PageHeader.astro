@@ -1,0 +1,38 @@
+---
+/** Intestazione delle pagine interne: titolo H1, sottotitolo e breadcrumb */
+import { url } from '../utils/url';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  /** Voce intermedia del percorso (es. per il dettaglio di una comunicazione) */
+  parent?: { label: string; href: string };
+}
+const { title, subtitle, parent } = Astro.props;
+---
+
+<section class="bg-ink-900 text-white">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <nav aria-label="Percorso di navigazione" class="mb-4 text-sm text-ink-300">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href={url('/')} class="hover:text-white hover:underline">Home</a></li>
+        {
+          parent && (
+            <>
+              <li aria-hidden="true">/</li>
+              <li>
+                <a href={url(parent.href)} class="hover:text-white hover:underline">
+                  {parent.label}
+                </a>
+              </li>
+            </>
+          )
+        }
+        <li aria-hidden="true">/</li>
+        <li aria-current="page" class="text-primary-400">{parent ? 'Dettaglio' : title}</li>
+      </ol>
+    </nav>
+    <h1 class="max-w-3xl text-3xl font-bold tracking-tight text-balance sm:text-5xl">{title}</h1>
+    {subtitle && <p class="mt-4 max-w-2xl text-lg text-ink-300">{subtitle}</p>}
+  </div>
+</section>

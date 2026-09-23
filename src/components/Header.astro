@@ -1,0 +1,143 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { mainNav } from '../config/navigation';
+import { site, telHref } from '../config/site';
+import { url, stripBase } from '../utils/url';
+
+const current = stripBase(Astro.url.pathname);
+const isActive = (href: string) =>
+  href === '/' ? current === '/' : current.startsWith(href.replace(/\/$/, ''));
+---
+
+<header class="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
+  <div class="mx-auto flex h-18 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <a href={url('/')} class="rounded-md" aria-label={`${site.name} – torna alla home`}>
+      <Logo />
+    </a>
+
+    <!-- Menu desktop -->
+    <nav aria-label="Menu principale" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          mainNav.map((item) => (
+            <li>
+              <a
+                href={url(item.href)}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[
+                  'rounded-md px-2.5 py-2 text-sm font-semibold transition-colors lg:px-3',
+                  isActive(item.href)
+                    ? 'text-primary-700'
+                    : 'text-ink-700 hover:bg-ink-50 hover:text-ink-900',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="hidden items-center gap-3 xl:flex">
+      <a href={telHref(site.phone)} class="flex items-center gap-2 text-sm font-semibold whitespace-nowrap text-ink-800 hover:text-primary-700">
+        <Icon name="phone" class="size-5 text-primary-600" />
+        {site.phone}
+      </a>
+    </div>
+    <a
+      href={url('/contatti/#preventivo')}
+      class="hidden rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-white shadow-sm transition-colors hover:bg-primary-700 lg:inline-flex"
+    >
+      Richiedi un preventivo
+    </a>
+
+    <!-- Pulsante menu mobile -->
+    <button
+      type="button"
+      id="menu-toggle"
+      class="inline-flex size-11 items-center justify-center rounded-lg text-ink-800 hover:bg-ink-100 lg:hidden"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+      <span class="sr-only" data-label>Apri il menu</span>
+      <span data-icon-open><Icon name="menu" class="size-7" /></span>
+      <span data-icon-close class="hidden"><Icon name="close" class="size-7" /></span>
+    </button>
+  </div>
+
+  <!-- Menu mobile a tendina -->
+  <nav id="mobile-menu" aria-label="Menu principale" class="hidden border-t border-ink-200 bg-white lg:hidden">
+    <ul class="space-y-1 px-4 py-4">
+      {
+        mainNav.map((item) => (
+          <li>
+            <a
+              href={url(item.href)}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class:list={[
+                'block rounded-lg px-4 py-3 text-base font-semibold',
+                isActive(item.href)
+                  ? 'bg-primary-50 text-primary-700'
+                  : 'text-ink-800 hover:bg-ink-50',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="grid gap-3 border-t border-ink-200 px-4 py-4">
+      <a
+        href={url('/contatti/#preventivo')}
+        class="rounded-lg bg-primary-600 px-4 py-3 text-center font-semibold text-white hover:bg-primary-700"
+      >
+        Richiedi un preventivo
+      </a>
+      <a
+        href={telHref(site.phone)}
+        class="flex items-center justify-center gap-2 rounded-lg border-2 border-ink-200 px-4 py-3 font-semibold text-ink-900"
+      >
+        <Icon name="phone" class="size-5 text-primary-600" />
+        Chiama {site.phone}
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Menu mobile: apertura/chiusura, tasto Esc, chiusura al passaggio a desktop
+  const button = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  if (button && menu) {
+    const label = button.querySelector('[data-label]');
+    const iconOpen = button.querySelector('[data-icon-open]');
+    const iconClose = button.querySelector('[data-icon-close]');
+
+    const setOpen = (open: boolean) => {
+      button.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('hidden', !open);
+      iconOpen?.classList.toggle('hidden', open);
+      iconClose?.classList.toggle('hidden', !open);
+      if (label) label.textContent = open ? 'Chiudi il menu' : 'Apri il menu';
+    };
+
+    button.addEventListener('click', () => {
+      setOpen(button.getAttribute('aria-expanded') !== 'true');
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        button.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 64rem)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

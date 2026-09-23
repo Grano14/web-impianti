@@ -1,0 +1,59 @@
+---
+/**
+ * Dati strutturati Schema.org (JSON-LD) per Google: descrivono l'attività
+ * locale. Tutti i valori arrivano da src/config/site.ts.
+ * Verifica: https://search.google.com/test/rich-results
+ */
+import { site } from '../config/site';
+import { services } from '../data/services';
+
+const siteUrl = new URL(import.meta.env.BASE_URL.replace(/\/?$/, '/'), Astro.site).href;
+const sameAs = Object.values(site.social).filter(Boolean);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Electrician',
+  '@id': `${siteUrl}#azienda`,
+  name: site.name,
+  legalName: site.legalName,
+  description: site.description,
+  url: siteUrl,
+  telephone: site.phone,
+  email: site.email,
+  vatID: `IT${site.vatNumber}`,
+  foundingDate: String(site.foundingYear),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    postalCode: site.address.postalCode,
+    addressLocality: site.address.city,
+    addressRegion: site.address.province,
+    addressCountry: site.address.country,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: site.geo.lat,
+    longitude: site.geo.lng,
+  },
+  areaServed: site.serviceArea.places.map((name) => ({ '@type': 'City', name })),
+  openingHoursSpecification: site.openingHours.flatMap((row) =>
+    row.slots.map((slot) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: slot.days.map((d) => `https://schema.org/${d}`),
+      opens: slot.opens,
+      closes: slot.closes,
+    })),
+  ),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Servizi',
+    itemListElement: services.map((s) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s.title, description: s.excerpt },
+    })),
+  },
+  ...(sameAs.length > 0 && { sameAs }),
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />

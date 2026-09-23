@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import WhyUs from '../components/WhyUs.astro';
+import NewsCard from '../components/NewsCard.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/services';
+import { site } from '../config/site';
+import { getComunicazioni } from '../utils/comunicazioni';
+import { url } from '../utils/url';
+
+const latest = await getComunicazioni(3);
+---
+
+<BaseLayout
+  title={`${site.name} – Impianti elettrici, fotovoltaico e ristrutturazioni a ${site.address.city}`}
+  description={`Impianti elettrici, impianti fotovoltaici e ristrutturazioni a ${site.address.city} e provincia. Tecnici certificati, preventivi gratuiti e assistenza. Contattaci!`}
+>
+  <Hero />
+
+  <section class="py-16 sm:py-24" aria-labelledby="servizi-titolo">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <SectionHeading id="servizi-titolo" eyebrow="I nostri servizi" title="Tutto quello che serve alla tua casa o azienda">
+        Un unico partner per l’impianto elettrico, l’energia solare e la ristrutturazione dei tuoi spazi.
+      </SectionHeading>
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        {services.map((service) => <ServiceCard service={service} />)}
+      </div>
+    </div>
+  </section>
+
+  <WhyUs />
+
+  {
+    latest.length > 0 && (
+      <section class="py-16 sm:py-24" aria-labelledby="comunicazioni-titolo">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <SectionHeading id="comunicazioni-titolo" eyebrow="Comunicazioni" title="Avvisi e novità" align="left" />
+            <a
+              href={url('/comunicazioni/')}
+              class="inline-flex items-center gap-1.5 font-semibold text-primary-700 hover:text-primary-800 hover:underline"
+            >
+              Tutte le comunicazioni <Icon name="arrowRight" class="size-4" />
+            </a>
+          </div>
+          <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {latest.map((item) => <NewsCard item={item} />)}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBanner />
+</BaseLayout>

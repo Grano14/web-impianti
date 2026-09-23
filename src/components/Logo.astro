@@ -1,0 +1,28 @@
+---
+/**
+ * Logo testuale con simbolo. Per usare un logo in immagine, sostituisci
+ * l'<svg> con <img src={url('/images/logo.svg')} alt="" class="h-10 w-auto" />.
+ */
+import { site } from '../config/site';
+
+interface Props {
+  /** "dark" per sfondi chiari, "light" per sfondi scuri */
+  tone?: 'dark' | 'light';
+}
+const { tone = 'dark' } = Astro.props;
+---
+
+<span class="flex items-center gap-2.5">
+  <svg viewBox="0 0 40 40" class="size-10 shrink-0" aria-hidden="true">
+    <rect width="40" height="40" rx="9" class="fill-primary-600"></rect>
+    <path d="M22.5 6 11 22.5h8L16.5 34 29 17h-8.5L22.5 6Z" fill="#fff"></path>
+  </svg>
+  <span class="flex flex-col leading-tight">
+    <span class:list={['text-lg font-extrabold tracking-tight', tone === 'dark' ? 'text-ink-900' : 'text-white']}>
+      {site.name}
+    </span>
+    <span class:list={['hidden text-xs font-medium whitespace-nowrap min-[400px]:block', tone === 'dark' ? 'text-ink-500' : 'text-ink-300']}>
+      Impianti · Fotovoltaico · Ristrutturazioni
+    </span>
+  </span>
+</span>
