@@ -61,9 +61,47 @@ jobs:
       - name: Verifica firme dei pacchetti
         run: npm audit signatures
 
+  dast:
+    name: DAST (ZAP baseline)
+    needs: [secrets, sast, sca]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - name: Avvia il sito (emulazione Cloudflare Pages)
+        env:
+          WRANGLER_SEND_METRICS: "false"
+        run: |
+          npx wrangler pages dev dist --ip 127.0.0.1 --port 8788 > wrangler.log 2>&1 &
+          npx --yes wait-on http://127.0.0.1:8788 --timeout 60000
+
+      - name: ZAP baseline scan
+        run: |
+          mkdir -p zap && chmod 777 zap
+          docker run --rm --network host -v "$PWD/zap:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py -t http://127.0.0.1:8788 \
+              -r report.html -J report.json -I
+
+      - name: Salva il report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: zap-report
+          path: zap/
+          retention-days: 30
+
   build:
     name: Build
-    needs: [secrets, sast, sca]   # parte solo se tutti i controlli passano
+    needs: [secrets, sast, sca, dast]   # parte solo se tutti i controlli passano
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
