@@ -18,7 +18,8 @@ export interface Service {
   features: string[];
   /** Riquadro evidenziato in fondo alla sezione */
   highlight: { title: string; text: string };
-  image: SiteImage;
+  /** Una o più foto: la prima è quella principale, le altre compaiono come miniature */
+  images: SiteImage[];
 }
 
 export const services: Service[] = [
@@ -46,7 +47,7 @@ export const services: Service[] = [
       title: 'Certificazione inclusa',
       text: 'Al termine di ogni lavoro rilasciamo la dichiarazione di conformità (Di.Co.), necessaria per agibilità, compravendite e contratti di fornitura.',
     },
-    image: images.serviceElectrical,
+    images: [images.serviceElectrical],
   },
   {
     id: 'fotovoltaico',
@@ -72,7 +73,7 @@ export const services: Service[] = [
       title: 'Pratiche burocratiche comprese',
       text: 'Ti seguiamo in ogni passaggio: autorizzazioni, connessione alla rete e documentazione per accedere alle agevolazioni fiscali disponibili.',
     },
-    image: images.servicePhotovoltaic,
+    images: [images.servicePhotovoltaic],
   },
   {
     id: 'ristrutturazioni',
@@ -98,7 +99,7 @@ export const services: Service[] = [
       title: 'Un unico referente',
       text: 'Coordiniamo noi tutte le squadre: niente telefonate a cinque ditte diverse, un solo preventivo chiaro e un cronoprogramma concordato.',
     },
-    image: images.serviceRenovation,
+    images: [images.serviceRenovation],
   },
 ];
 

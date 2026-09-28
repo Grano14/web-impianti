@@ -10,6 +10,10 @@
  *
  * Finché `src` è vuoto, sul sito compare un riquadro grigio con l'etichetta `label`.
  * Consiglio: foto in formato .jpg o .webp, larghe circa 1600px, sotto i 300 KB.
+ *
+ * Un servizio può avere più foto: in src/data/services.ts il campo `images` è un
+ * elenco. Basta aggiungere qui altre voci (es. `servicePhotovoltaicDettaglio`) e
+ * inserirle nell'elenco `images: [...]` del servizio corrispondente.
  */
 
 export interface SiteImage {
