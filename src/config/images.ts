@@ -51,4 +51,9 @@ export const images = {
     alt: 'La squadra di tecnici davanti al furgone aziendale',
     label: 'Foto della squadra con il furgone aziendale',
   },
+  serviceRiscaldamento: {
+    src: '',
+    alt: 'Caldaia a condensazione appena installata',
+    label: 'Foto caldaia a condensazione installata',
+  },
 } satisfies Record<string, SiteImage>;

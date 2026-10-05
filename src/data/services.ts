@@ -101,6 +101,30 @@ export const services: Service[] = [
     },
     images: [images.serviceRenovation],
   },
+  {
+    id: 'riscaldamento',
+    title: 'Riscaldamento',
+    icon: 'flame',
+    excerpt:
+      'Impianti di riscaldamento e impianti di condizionamneto. Installazione di caldaie a gas e pompe di calore.',
+    description: [
+      "Installiamo impianti di riscaldamento per case ed aziende, impianti di condizionamento per mantenere fresca la casa durante l'estate. Seguiamo per te le pratiche burocratiche per eventuali agevolazioni fiscali e bonus",
+      'Scegliamo solo marchi di qualità per garantire un impianto di ottimo livello. Con solare termico e pompe di calore riscaldi ogni spazio risparmiando sulla bolletta del gas.',
+    ],
+    features: [
+      'Installazione di solare termico',
+      'Manutenzione caldaie',
+      'Installazione pompe di calore',
+      'Installazione di caldaie',
+      'Interventi di efficientamento energetico',
+      'Gestione delle pratiche edilizie con tecnici abilitati',
+    ],
+    highlight: {
+      title: 'Pratiche e certificazioni comprese',
+      text: 'Coordiniamo chiaro dei lavori, ci interfacciamo noi per la richiesta di agevolazioni e bonus GSE.',
+    },
+    images: [images.serviceRiscaldamento],
+  },
 ];
 
 /** Fasi di lavoro mostrate nella pagina servizi */
@@ -120,5 +144,9 @@ export const workSteps = [
   {
     title: 'Lavori e certificazione',
     text: 'Eseguiamo i lavori a regola d’arte e consegniamo tutta la documentazione.',
+  },
+  {
+    title: 'Manutenzione',
+    text: 'Ci occupiamo della manutenzione ordinaria e straordinaria dei lavori.'
   },
 ];

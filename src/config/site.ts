@@ -10,35 +10,36 @@
 
 export const site = {
   /** Nome commerciale mostrato nel logo e nei titoli */
-  name: 'Rossi Impianti',
+  name: 'Edil Service di Grano Roberto',
   /** Ragione sociale completa (footer, privacy policy) */
-  legalName: 'Rossi Impianti S.r.l.',
+  legalName: 'Edil Service di Grano Roberto',
   /** Breve frase sotto al nome */
-  tagline: 'Impianti elettrici · Fotovoltaico · Ristrutturazioni',
+  tagline: 'Impianti elettrici · Fotovoltaico · Ristrutturazioni · Riscaldamento',
   /** Descrizione generale usata come meta description di riserva */
   description:
     'Installazione di impianti elettrici, impianti fotovoltaici e ristrutturazioni chiavi in mano. Tecnici certificati, preventivi gratuiti e assistenza post-vendita.',
   /** Anno di inizio attività: serve a calcolare gli anni di esperienza */
-  foundingYear: 2005,
+  foundingYear: 2011,
 
   /** Telefono fisso o principale, come deve essere mostrato */
-  phone: '+39 02 1234 5678',
+  phone: '+39 328 376 3531',
   /** Cellulare (facoltativo: lascia '' per nasconderlo) */
-  mobile: '+39 340 123 4567',
+  mobile: '',
   /** Numero WhatsApp in formato internazionale, SOLO cifre, senza + né spazi */
-  whatsapp: '393401234567',
+  whatsapp: '393283763531',
   /** Messaggio precompilato quando si apre WhatsApp */
   whatsappMessage: 'Buongiorno, vorrei ricevere informazioni per un preventivo.',
-  email: 'info@rossi-impianti.it',
+  email: 'info@edilservice-grano.it',
   /** PEC (facoltativa: lascia '' per nasconderla) */
-  pec: 'rossi-impianti@pec.it',
+  pec: 'robertograno@pec.it',
 
   address: {
-    street: 'Via dell’Artigianato 12',
-    postalCode: '20100',
-    city: 'Milano',
-    province: 'MI',
-    region: 'Lombardia',
+    street: 'Via Montecalvario 32',
+    postalCode: '85050',
+    city: 'Brienza',
+    provinceEstesa: 'Potenza',
+    province: 'PZ',
+    region: 'Basilicata',
     country: 'IT',
   },
   /**
@@ -46,19 +47,19 @@ export const site = {
    * tasto destro sul punto → "Mostra indirizzo").
    */
   geo: {
-    lat: 45.4642,
-    lng: 9.19,
+    lat: 40.477472,
+    lng: 15.630957,
   },
 
   /** Partita IVA (solo numero, senza "IT") */
-  vatNumber: '01234567890',
+  vatNumber: 'da modificare',
   /** Numero REA (facoltativo: lascia '' per nasconderlo) */
-  rea: 'MI-1234567',
+  rea: 'da modificare',
 
   /** Zona servita: testo descrittivo + elenco delle località principali */
   serviceArea: {
-    description: 'Milano e provincia, Monza e Brianza e comuni limitrofi',
-    places: ['Milano', 'Monza', 'Sesto San Giovanni', 'Cinisello Balsamo', 'Rho', 'Legnano'],
+    description: 'Potenza e provincia, Matera, Salerno e comuni limitrofi',
+    places: ['Potenza', 'Brienza', 'Vallo di Diano', "Val d'Agri"],
   },
 
   /**
@@ -70,16 +71,16 @@ export const site = {
   openingHours: [
     {
       label: 'Lunedì – Venerdì',
-      hours: '8:00 – 12:30 · 14:00 – 18:00',
+      hours: '8:00 – 13:00 · 14:00 – 18:00',
       slots: [
-        { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '12:30' },
+        { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '13:00' },
         { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '14:00', closes: '18:00' },
       ],
     },
     {
       label: 'Sabato',
-      hours: '8:30 – 12:00 (su appuntamento)',
-      slots: [{ days: ['Saturday'], opens: '08:30', closes: '12:00' }],
+      hours: '8:30 – 13:00',
+      slots: [{ days: ['Saturday'], opens: '08:30', closes: '13:00' }],
     },
     {
       label: 'Domenica',
