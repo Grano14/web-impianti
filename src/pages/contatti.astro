@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
-import ContactForm from '../components/ContactForm.astro';
+import QuoteRequestForm from '../components/QuoteRequestForm.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import Icon from '../components/Icon.astro';
-import { site, fullAddress, telHref, whatsappHref } from '../config/site';
+import { site, fullAddress, telHref, telegramChatHref, isTelegramConfigured } from '../config/site';
 
 const channels = [
   { icon: 'phone', label: 'Telefono', value: site.phone, href: telHref(site.phone) },
@@ -16,33 +16,37 @@ const channels = [
 
 <BaseLayout
   title="Contatti e preventivi gratuiti"
-  description={`Contatta ${site.name} per un preventivo gratuito: telefono ${site.phone}, WhatsApp, email o modulo online. Sede a ${site.address.city}, interventi in ${site.serviceArea.description}.`}
+  description={`Contatta ${site.name} per un preventivo gratuito: telefono ${site.phone}, email o Telegram. Sede a ${site.address.city}, interventi in ${site.serviceArea.description}.`}
 >
   <PageHeader
     title="Contatti"
-    subtitle="Chiamaci, scrivici su WhatsApp o compila il modulo: ti rispondiamo entro un giorno lavorativo."
+    subtitle="Chiamaci, scrivici su Telegram oppure richiedi un preventivo da qui sotto: ti rispondiamo entro un giorno lavorativo."
   />
 
   <section class="py-14 sm:py-20">
     <div class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-5 lg:gap-12 lg:px-8">
       <!-- Recapiti -->
       <div class="space-y-6 lg:col-span-2">
-        <a
-          href={whatsappHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-4 rounded-2xl bg-[#1f7a4d] p-5 text-white shadow-sm transition-colors hover:bg-[#186540]"
-        >
-          <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/15">
-            <Icon name="chat" class="size-7" />
-          </span>
-          <span>
-            <span class="block text-lg font-bold">Scrivici su WhatsApp</span>
-            <span class="block text-sm text-white/90">Risposta rapida negli orari di apertura</span>
-          </span>
-          <Icon name="arrowRight" class="ml-auto size-5 shrink-0" />
-          <span class="sr-only">(si apre in una nuova scheda)</span>
-        </a>
+        {
+          isTelegramConfigured && (
+            <a
+              href={telegramChatHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-4 rounded-2xl bg-[#1d78a6] p-5 text-white shadow-sm transition-colors hover:bg-[#165f84]"
+            >
+              <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/15">
+                <Icon name="send" class="size-7" />
+              </span>
+              <span>
+                <span class="block text-lg font-bold">Scrivici su Telegram</span>
+                <span class="block text-sm text-white/90">Risposta rapida negli orari di apertura</span>
+              </span>
+              <Icon name="arrowRight" class="ml-auto size-5 shrink-0" />
+              <span class="sr-only">(si apre in una nuova scheda)</span>
+            </a>
+          )
+        }
 
         <div class="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm">
           <h2 class="text-lg font-bold text-ink-900">Recapiti</h2>
@@ -112,11 +116,11 @@ const channels = [
         <div id="preventivo" class="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm sm:p-8">
           <h2 class="text-2xl font-bold text-ink-900">Richiedi un preventivo gratuito</h2>
           <p class="mt-2 text-ink-600">
-            Compila il modulo: ti ricontattiamo per capire le tue esigenze ed eventualmente fissare un sopralluogo, senza
-            impegno.
+            Scegli il tipo di impianto e scrivi cosa ti serve: invii la richiesta dalla tua email o da Telegram, come
+            preferisci. Ti ricontattiamo per capire le tue esigenze ed eventualmente fissare un sopralluogo, senza impegno.
           </p>
           <div class="mt-8">
-            <ContactForm />
+            <QuoteRequestForm />
           </div>
         </div>
       </div>

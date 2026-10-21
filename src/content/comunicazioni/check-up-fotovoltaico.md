@@ -18,6 +18,6 @@ Al termine riceverai una **breve relazione** con lo stato dell’impianto ed eve
 
 ## Come prenotare
 
-Contattaci per telefono, WhatsApp o tramite il modulo nella pagina contatti, indicando la zona e l’anno di installazione. Ti richiameremo per fissare l’appuntamento.
+Contattaci per telefono, Telegram o tramite il modulo nella pagina contatti, indicando la zona e l’anno di installazione. Ti richiameremo per fissare l’appuntamento.
 
 > Il check-up è gratuito e senza impegno. L’offerta è valida nella nostra zona di servizio.

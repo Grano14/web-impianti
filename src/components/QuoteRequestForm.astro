@@ -1,0 +1,158 @@
+---
+/**
+ * Richiesta di preventivo SENZA server e senza servizi esterni.
+ *
+ * Il visitatore sceglie il tipo di impianto e scrive il messaggio, poi sceglie come
+ * inviarlo: via email o via Telegram. Il sito si limita a preparare il testo nel
+ * browser e ad aprire l'app del visitatore (programma di posta o Telegram) con il
+ * messaggio già scritto: l'invio lo fa lui, dal proprio account. Nessun dato passa
+ * dal sito o da terzi.
+ *
+ * Email e nome utente Telegram si impostano in src/config/site.ts.
+ */
+import Icon from './Icon.astro';
+import { services } from '../data/services';
+import { site, telegramHref, isTelegramConfigured } from '../config/site';
+
+const field =
+  'mt-1.5 block w-full rounded-lg border border-ink-300 bg-white px-3.5 py-2.5 text-ink-900 shadow-sm placeholder:text-ink-400 focus:border-primary-600 focus:ring-2 focus:ring-primary-600/30 focus:outline-none';
+const label = 'block text-sm font-semibold text-ink-900';
+const button =
+  'inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3.5 text-lg font-semibold text-white shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-60';
+---
+
+<form
+  class="space-y-5"
+  data-quote-form
+  data-email={site.email}
+  data-telegram={isTelegramConfigured ? telegramHref : ''}
+>
+  {
+    !isTelegramConfigured && (
+      <div class="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900" role="note">
+        <strong>Telegram non ancora attivo.</strong> Inserisci il nome utente Telegram in{' '}
+        <code>src/config/site.ts</code> (campo <code>telegramUsername</code>) per abilitare il pulsante.
+      </div>
+    )
+  }
+
+  <div>
+    <label for="servizio" class={label}>Tipo di impianto <span class="text-primary-700" aria-hidden="true">*</span></label>
+    <select id="servizio" name="servizio" required class={field}>
+      {services.map((s) => <option>{s.title}</option>)}
+      <option>Altro / più servizi</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="messaggio" class={label}>Messaggio <span class="text-primary-700" aria-hidden="true">*</span></label>
+    <textarea
+      id="messaggio"
+      name="messaggio"
+      rows="6"
+      required
+      maxlength="3000"
+      aria-describedby="messaggio-aiuto"
+      class={field}></textarea>
+    <p id="messaggio-aiuto" class="mt-1.5 text-sm text-ink-500">
+      Descrivi il lavoro (tipo di immobile, metratura indicativa, tempistiche) e indica il tuo nome e il comune dove
+      servono i lavori.
+    </p>
+  </div>
+
+  <fieldset class="space-y-3">
+    <legend class="text-sm font-semibold text-ink-900">Come vuoi inviare la richiesta?</legend>
+    <div class="grid gap-3 sm:grid-cols-2">
+      <button type="button" data-send="email" class:list={[button, 'bg-primary-600 hover:bg-primary-700']}>
+        <Icon name="mail" class="size-5" />
+        Invia via email
+      </button>
+      <button
+        type="button"
+        data-send="telegram"
+        disabled={!isTelegramConfigured}
+        class:list={[button, 'bg-[#1d78a6] hover:bg-[#165f84]']}
+      >
+        <Icon name="send" class="size-5" />
+        Invia via Telegram
+      </button>
+    </div>
+    <p class="text-sm text-ink-500">
+      Si aprirà la tua app (posta o Telegram) con il messaggio già scritto: la richiesta parte solo quando premi
+      “Invia” lì. Nessun dato passa da questo sito.
+    </p>
+  </fieldset>
+
+  <noscript>
+    <p class="rounded-lg bg-ink-50 p-4 text-sm text-ink-700">
+      Per usare il modulo serve JavaScript. In alternativa scrivici a{' '}
+      <a href={`mailto:${site.email}`} class="font-semibold text-primary-700 underline">{site.email}</a>
+      {isTelegramConfigured && (
+        <>
+          {' '}o su{' '}
+          <a href={telegramHref} class="font-semibold text-primary-700 underline" target="_blank" rel="noopener noreferrer">
+            Telegram
+          </a>
+        </>
+      )}
+      .
+    </p>
+  </noscript>
+
+  <div data-form-status role="status" aria-live="polite" class="hidden rounded-lg p-4 text-sm font-medium" tabindex="-1"></div>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-quote-form]');
+  const status = form?.querySelector<HTMLElement>('[data-form-status]');
+
+  // Oltre questa lunghezza i link possono essere troncati dalle app: si copia il testo negli appunti
+  const MAX_URL_LENGTH = 1800;
+
+  const showStatus = (message: string) => {
+    if (!status) return;
+    status.textContent = message;
+    status.className = 'rounded-lg bg-ink-50 p-4 text-sm font-medium text-ink-800';
+    status.focus();
+  };
+
+  const buildMessage = () => {
+    const data = new FormData(form!);
+    const servizio = String(data.get('servizio') ?? '');
+    const messaggio = String(data.get('messaggio') ?? '').trim();
+    return {
+      subject: `Richiesta preventivo: ${servizio}`,
+      body: `Buongiorno, vorrei richiedere un preventivo per: ${servizio}.\n\n${messaggio}`,
+    };
+  };
+
+  form?.querySelector('[data-send="email"]')?.addEventListener('click', () => {
+    if (!form.reportValidity()) return;
+    const { subject, body } = buildMessage();
+    const email = form.dataset.email ?? '';
+    // Gli a capo nelle email vanno scritti come CRLF
+    const link = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.replace(/\n/g, '\r\n'))}`;
+    window.location.href = link;
+    showStatus(
+      `Si apre il tuo programma di posta con il messaggio pronto: controllalo e premi “Invia”. Se non si apre nulla, scrivici direttamente a ${email}.`,
+    );
+  });
+
+  form?.querySelector('[data-send="telegram"]')?.addEventListener('click', () => {
+    if (!form.reportValidity()) return;
+    const base = form.dataset.telegram;
+    if (!base) return;
+    const { body: text } = buildMessage();
+    const withText = `${base}?text=${encodeURIComponent(text)}`;
+
+    let link = withText;
+    let message = 'Si apre Telegram con il messaggio pronto: controllalo e premi invio.';
+    if (withText.length > MAX_URL_LENGTH) {
+      link = base;
+      navigator.clipboard?.writeText(text).catch(() => {});
+      message = 'Messaggio lungo: l’abbiamo copiato negli appunti. Nella chat di Telegram che si apre, incollalo e premi invio.';
+    }
+    if (!window.open(link, '_blank', 'noopener')) window.location.href = link;
+    showStatus(message);
+  });
+</script>

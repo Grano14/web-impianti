@@ -2,7 +2,7 @@
 import Logo from './LogoFooter.astro';
 import Icon from './Icon.astro';
 import { mainNav, legalNav } from '../config/navigation';
-import { site, fullAddress, telHref, whatsappHref } from '../config/site';
+import { site, fullAddress, telHref, telegramChatHref, isTelegramConfigured } from '../config/site';
 import { url } from '../utils/url';
 
 const year = new Date().getFullYear();
@@ -36,12 +36,16 @@ const year = new Date().getFullYear();
           <Icon name="mail" class="size-5 shrink-0 text-primary-400" />
           <a href={`mailto:${site.email}`} class="break-all hover:text-white hover:underline">{site.email}</a>
         </li>
-        <li class="flex gap-3">
-          <Icon name="chat" class="size-5 shrink-0 text-primary-400" />
-          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" class="hover:text-white hover:underline">
-            Scrivici su WhatsApp<span class="sr-only"> (si apre in una nuova scheda)</span>
-          </a>
-        </li>
+        {
+          isTelegramConfigured && (
+            <li class="flex gap-3">
+              <Icon name="send" class="size-5 shrink-0 text-primary-400" />
+              <a href={telegramChatHref} target="_blank" rel="noopener noreferrer" class="hover:text-white hover:underline">
+                Scrivici su Telegram<span class="sr-only"> (si apre in una nuova scheda)</span>
+              </a>
+            </li>
+          )
+        }
       </ul>
     </div>
 

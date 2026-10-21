@@ -1,7 +1,7 @@
 ---
 import Button from './Button.astro';
 import Icon from './Icon.astro';
-import { site, telHref, whatsappHref } from '../config/site';
+import { site, telHref, telegramChatHref, isTelegramConfigured } from '../config/site';
 import { url } from '../utils/url';
 
 interface Props {
@@ -30,10 +30,14 @@ const {
             <Icon name="phone" class="size-5" />
             {site.phone}
           </Button>
-          <Button href={whatsappHref} variant="outline-light" size="lg" target="_blank" rel="noopener noreferrer">
-            <Icon name="chat" class="size-5" />
-            WhatsApp<span class="sr-only"> (si apre in una nuova scheda)</span>
-          </Button>
+          {
+            isTelegramConfigured && (
+              <Button href={telegramChatHref} variant="outline-light" size="lg" target="_blank" rel="noopener noreferrer">
+                <Icon name="send" class="size-5" />
+                Telegram<span class="sr-only"> (si apre in una nuova scheda)</span>
+              </Button>
+            )
+          }
         </div>
       </div>
     </div>

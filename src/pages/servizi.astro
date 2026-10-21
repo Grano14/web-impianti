@@ -110,10 +110,13 @@ import { url } from '../utils/url';
       <SectionHeading id="come-lavoriamo" eyebrow="Come lavoriamo" title="Dal primo contatto alla consegna" tone="light">
         Un percorso semplice e trasparente, con un referente dedicato in ogni fase.
       </SectionHeading>
-      <ol class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <ol
+        class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(var(--fasi),minmax(0,1fr))] lg:gap-4"
+        style={`--fasi: ${workSteps.length}`}
+      >
         {
           workSteps.map((step, i) => (
-            <li class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
+            <li class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 lg:p-5">
               <span class="flex size-10 items-center justify-center rounded-full bg-primary-600 font-bold text-white" aria-hidden="true">
                 {i + 1}
               </span>

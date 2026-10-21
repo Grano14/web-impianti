@@ -20,7 +20,7 @@ pensato per essere pubblicato gratuitamente su **GitHub Pages**.
 
 | Cosa                                   | File                                         |
 | -------------------------------------- | -------------------------------------------- |
-| Nome, telefono, email, indirizzo, P.IVA, orari, zona servita, WhatsApp, ID Formspree | `src/config/site.ts` |
+| Nome, telefono, email, indirizzo, P.IVA, orari, zona servita, nome utente Telegram | `src/config/site.ts` |
 | Colori (palette arancione / antracite) | `src/styles/global.css` (blocco `@theme`)    |
 | Immagini                               | `public/images/` + `src/config/images.ts`    |
 | Testi dei servizi                      | `src/data/services.ts`                       |
@@ -60,16 +60,19 @@ In `src/styles/global.css` modifica le variabili `--color-primary-*` (arancione)
 perché ospitano testo bianco e link: verifica il contrasto su
 https://webaim.org/resources/contrastchecker/.
 
-## Modulo contatti (Formspree)
+## Richiesta di preventivo (email o Telegram)
 
-1. Crea un account gratuito su https://formspree.io e un nuovo form.
-2. Copia l'ID del form (la parte finale dell'indirizzo, es. `xyzabcd` in `https://formspree.io/f/xyzabcd`).
-3. Incollalo in `src/config/site.ts` nel campo `formspreeId`.
-4. Nelle impostazioni del form su Formspree **disattiva reCAPTCHA**: il sito ha già un
-   campo anti-spam invisibile, e reCAPTCHA caricherebbe servizi Google (meno privacy);
-   inoltre l'invio senza ricaricare la pagina funziona al meglio con reCAPTCHA disattivato.
-5. Se possibile, imposta su Formspree la cancellazione automatica dei messaggi dopo un
-   certo periodo, coerente con quanto scritto nella privacy policy.
+Il modulo nella pagina Contatti non usa server né servizi esterni: il visitatore sceglie il
+tipo di impianto, scrive il messaggio e sceglie se inviarlo via email o via Telegram. Il sito
+apre la sua app (posta o Telegram) con il testo già scritto, e l'invio lo fa lui.
+
+1. Imposta la tua email in `src/config/site.ts` (campo `email`).
+2. Su Telegram scegli un nome utente pubblico (Impostazioni → Nome utente) e scrivilo, **senza @**,
+   in `src/config/site.ts` nel campo `telegramUsername`. Così il numero di telefono non compare mai.
+3. Finché `telegramUsername` resta il segnaposto, il pulsante Telegram è disattivato.
+
+Nota: su computer senza un programma di posta configurato il pulsante email può non aprire nulla;
+per questo l'indirizzo email compare anche nei recapiti della pagina e nel messaggio mostrato dopo il clic.
 
 ## Privacy
 
@@ -78,8 +81,8 @@ Il sito è progettato per raccogliere il minimo indispensabile:
 - nessun cookie, nessuna statistica o strumento di tracciamento → nessun banner cookie;
 - font di sistema: nessun collegamento a Google Fonts o altri server esterni;
 - la mappa (OpenStreetMap) viene caricata **solo dopo il clic** dell'utente;
-- WhatsApp e Google Maps sono semplici link: nessun dato parte finché l'utente non ci clicca;
-- l'unico dato raccolto è quello inviato volontariamente con il modulo di contatto.
+- Telegram e Google Maps sono semplici link: nessun dato parte finché l'utente non ci clicca;
+- il sito non raccoglie né memorizza nulla: le richieste partono dall'email o da Telegram del visitatore.
 
 La pagina `src/pages/privacy.astro` è un **modello di partenza**: falla verificare
 da un consulente prima della pubblicazione definitiva. Se in futuro aggiungi

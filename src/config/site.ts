@@ -25,10 +25,6 @@ export const site = {
   phone: '+39 328 376 3531',
   /** Cellulare (facoltativo: lascia '' per nasconderlo) */
   mobile: '',
-  /** Numero WhatsApp in formato internazionale, SOLO cifre, senza + né spazi */
-  whatsapp: '393283763531',
-  /** Messaggio precompilato quando si apre WhatsApp */
-  whatsappMessage: 'Buongiorno, vorrei ricevere informazioni per un preventivo.',
   email: 'info@edilservice-grano.it',
   /** PEC (facoltativa: lascia '' per nasconderla) */
   pec: 'robertograno@pec.it',
@@ -90,11 +86,14 @@ export const site = {
   ],
 
   /**
-   * ID del modulo Formspree (la parte finale dell'indirizzo del form,
-   * es. per https://formspree.io/f/xyzabcd l'ID è "xyzabcd").
-   * Finché resta il segnaposto, il modulo mostra un avviso.
+   * Nome utente Telegram pubblico, SENZA la @ (es. per t.me/edilservice scrivi 'edilservice').
+   * Si imposta da Telegram → Impostazioni → Nome utente. Con il nome utente il numero
+   * di telefono non compare mai. Finché resta il segnaposto, il pulsante Telegram del
+   * modulo preventivi è disattivato.
    */
-  formspreeId: 'IL_TUO_ID_FORMSPREE',
+  telegramUsername: 'IL_TUO_USERNAME_TELEGRAM',
+  /** Messaggio precompilato quando si apre Telegram dai pulsanti "Scrivici su Telegram" */
+  telegramMessage: 'Buongiorno, vorrei ricevere informazioni per un preventivo.',
 
   /** Link ai profili social (lascia '' per nasconderli) */
   social: {
@@ -106,7 +105,7 @@ export const site = {
   /** Dati per la privacy policy */
   privacy: {
     /** Data dell'ultimo aggiornamento della privacy policy */
-    lastUpdated: '2026-09-23',
+    lastUpdated: '2026-10-21',
   },
 } as const;
 
@@ -123,9 +122,9 @@ export const fullAddress = `${site.address.street}, ${site.address.postalCode} $
 /** Trasforma un numero leggibile in un link tel: valido */
 export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
 
-/** Link diretto alla chat WhatsApp con messaggio precompilato */
-export const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMessage)}`;
+/** Link alla chat Telegram (senza testo: il modulo preventivi lo aggiunge) */
+export const telegramHref = `https://t.me/${site.telegramUsername}`;
 
-/** Indirizzo del modulo Formspree */
-export const formspreeAction = `https://formspree.io/f/${site.formspreeId}`;
-export const isFormspreeConfigured = !site.formspreeId.startsWith('IL_TUO');
+/** Link diretto alla chat Telegram con messaggio precompilato (pulsanti "Scrivici su Telegram") */
+export const telegramChatHref = `${telegramHref}?text=${encodeURIComponent(site.telegramMessage)}`;
+export const isTelegramConfigured = !site.telegramUsername.startsWith('IL_TUO');

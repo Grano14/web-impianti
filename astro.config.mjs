@@ -22,5 +22,10 @@ export default defineConfig({
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Mai script inline: la Content-Security-Policy in public/_headers ammette solo
+      // `script-src 'self'`, quindi ogni script deve essere un file esterno.
+      assetsInlineLimit: 0,
+    },
   },
 });

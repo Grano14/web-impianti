@@ -23,7 +23,8 @@ const lastUpdated = formatDate(new Date(site.privacy.lastUpdated));
       <p>
         Questa pagina descrive come vengono trattati i dati personali degli utenti che visitano il sito e che ci
         contattano. In sintesi: <strong>il sito non usa cookie di profilazione né strumenti di statistica</strong> e
-        raccoglie solo i dati che scegli di inviarci tramite il modulo di contatto.
+        non raccoglie né memorizza i dati che scrivi nella richiesta di preventivo: sei tu a inviarcela dalla tua email
+        o da Telegram.
       </p>
 
       <h2>1. Titolare del trattamento</h2>
@@ -33,28 +34,31 @@ const lastUpdated = formatDate(new Date(site.privacy.lastUpdated));
       </p>
 
       <h2>2. Dati raccolti e finalità</h2>
-      <h3>Dati inviati tramite il modulo di contatto</h3>
+      <h3>Richiesta di preventivo (email o Telegram)</h3>
       <p>
-        Quando compili il modulo nella pagina <a href={url('/contatti/')}>Contatti</a> raccogliamo nome e cognome,
-        indirizzo email, e facoltativamente numero di telefono e comune dei lavori, oltre al contenuto del messaggio.
-        Questi dati sono usati <strong>esclusivamente per rispondere alla tua richiesta</strong> e, se lo desideri, per
-        predisporre un preventivo. Non vengono usati per invio di pubblicità o newsletter.
+        Nella pagina <a href={url('/contatti/')}>Contatti</a> scegli il tipo di impianto e scrivi un messaggio. Il sito
+        prepara il testo <strong>solo nel tuo browser</strong> e apre la tua app di posta o Telegram con il messaggio già
+        scritto: <strong>nessun dato viene inviato al sito né a servizi di terzi</strong> finché non premi tu “Invia” nella tua
+        app. Se invii la richiesta, riceviamo il tuo indirizzo email o il tuo profilo Telegram (nome e nome utente) e il
+        contenuto del messaggio, compresi i dati personali che decidi di scrivere (es. nome, telefono, comune).
+        Li usiamo <strong>esclusivamente per rispondere alla tua richiesta</strong> e, se lo desideri, per predisporre un
+        preventivo. Non vengono usati per invio di pubblicità o newsletter.
       </p>
       <p>
         <strong>Base giuridica:</strong> esecuzione di misure precontrattuali adottate su tua richiesta (art. 6, par. 1,
         lett. b GDPR). Il conferimento dei dati obbligatori è necessario per poterti rispondere.
       </p>
 
-      <h3>Contatti via telefono, email e WhatsApp</h3>
+      <h3>Contatti via telefono, email e Telegram</h3>
       <p>
-        Se ci contatti per telefono, email o WhatsApp, tratteremo i dati che ci fornisci per le stesse finalità indicate
-        sopra. Il link WhatsApp apre l’app o il sito di WhatsApp, servizio gestito da WhatsApp Ireland Ltd. (gruppo
-        Meta), che tratta i dati secondo la propria informativa.
+        Se ci contatti per telefono, email o Telegram, tratteremo i dati che ci fornisci per le stesse finalità
+        indicate sopra. I link Telegram aprono l’app o il sito di Telegram, servizio gestito dal gestore di Telegram,
+        che tratta i dati secondo la propria informativa.
       </p>
 
       <h3>Dati di navigazione</h3>
       <p>
-        Il sito è ospitato su GitHub Pages (GitHub Inc.). Come qualsiasi server web, i sistemi del fornitore di
+        Il sito è ospitato su Cloudflare Pages (Cloudflare, Inc.). Come qualsiasi server web, i sistemi del fornitore di
         hosting possono registrare in modo automatico alcuni dati tecnici (ad esempio l’indirizzo IP) per garantire la
         sicurezza e il corretto funzionamento del servizio. Noi non abbiamo accesso a questi dati e non li usiamo per
         identificare i visitatori.
@@ -77,10 +81,9 @@ const lastUpdated = formatDate(new Date(site.privacy.lastUpdated));
 
       <h2>5. Destinatari e trasferimento dei dati</h2>
       <p>
-        I messaggi inviati con il modulo di contatto sono gestiti tramite il servizio <strong>Formspree</strong>
-        (Formspree Inc., Stati Uniti), che li inoltra alla nostra casella email in qualità di responsabile del
-        trattamento. Il trasferimento verso gli Stati Uniti avviene sulla base delle garanzie previste dal GDPR (Clausole
-        Contrattuali Standard e/o EU-US Data Privacy Framework). I dati non vengono diffusi né venduti a terzi.
+        Le richieste che ci invii viaggiano attraverso il tuo fornitore di posta o attraverso Telegram, che le trattano
+        secondo le proprie informative; il sito non interviene in questo passaggio. I dati ricevuti restano nella nostra
+        casella email o nella nostra chat Telegram e non vengono diffusi né venduti a terzi.
       </p>
 
       <h2>6. Conservazione</h2>

@@ -131,7 +131,7 @@ export const services: Service[] = [
 export const workSteps = [
   {
     title: 'Contatto',
-    text: 'Ci racconti di cosa hai bisogno per telefono, WhatsApp o con il modulo online.',
+    text: 'Ci racconti di cosa hai bisogno per telefono, email o Telegram.',
   },
   {
     title: 'Sopralluogo',
